@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -20,22 +21,22 @@ class AppBarTitle extends StatelessWidget {
               Text(
                 "S5",
                 style: GoogleFonts.amiri(
-                  fontSize: 40,
+                  fontSize: 40.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ],
           ),
-          const SizedBox(
-            width: 5,
+          SizedBox(
+            width: 5.w,
           ),
           Positioned(
-            bottom: 5,
-            left: 160,
+            bottom: 5.h,
+            left: 160.w,
             child: Text(
               "day planner",
               style: GoogleFonts.arvo(
-                fontSize: 12,
+                fontSize: 12.sp,
                 fontWeight: FontWeight.bold,
               ),
               textAlign: TextAlign.start,

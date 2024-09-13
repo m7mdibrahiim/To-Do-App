@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:todo_app/helper/appbar_title.dart';
@@ -12,9 +13,11 @@ class TodoScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const AppBarTitle(size: 20),
+        title: AppBarTitle(size: 20.sp),
         actions: [
           PopupMenuButton<String>(
+            iconColor: const Color.fromARGB(255, 237, 109, 5),
+            color: const Color.fromARGB(255, 175, 219, 255),
             onSelected: todoProvider.setFilter,
             itemBuilder: (BuildContext context) {
               return ['All', 'Completed', 'Incomplete'].map((String choice) {
@@ -28,10 +31,13 @@ class TodoScreen extends StatelessWidget {
         ],
       ),
       body: todoProvider.filteredItems.isEmpty
-          ? const Center(
+          ? Center(
               child: Text(
-                'No tasks available.',
-                style: TextStyle(fontSize: 18),
+                'no tasks available...',
+                style: GoogleFonts.adamina(
+                    fontSize: 23.sp,
+                    fontWeight: FontWeight.bold,
+                    color: const Color.fromARGB(255, 31, 163, 245)),
               ),
             )
           : AnimatedList(
@@ -49,10 +55,10 @@ class TodoScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color.fromARGB(255, 175, 219, 255),
         onPressed: () => _showAddTodoDialog(context),
-        child: const Icon(
+        child: Icon(
           Icons.add,
-          color: Color.fromARGB(255, 242, 112, 5),
-          size: 25,
+          color: const Color.fromARGB(255, 242, 112, 5),
+          size: 25.sp,
         ),
       ),
     );
@@ -71,6 +77,8 @@ class TodoScreen extends StatelessWidget {
             item.task,
             style: TextStyle(
               decoration: item.isCompleted ? TextDecoration.lineThrough : null,
+              decorationColor: Colors.blue,
+              decorationThickness: 2.3,
             ),
           ),
         ),
@@ -79,10 +87,10 @@ class TodoScreen extends StatelessWidget {
           style: const TextStyle(color: Colors.black54),
         ),
         trailing: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.clear,
-            color: Colors.red,
-            size: 20,
+            color: const Color.fromARGB(255, 249, 95, 0),
+            size: 20.sp,
           ),
           onPressed: () => todoProvider.deleteTodoItem(item),
         ),
@@ -91,6 +99,29 @@ class TodoScreen extends StatelessWidget {
           value: item.isCompleted,
           onChanged: (bool? value) {
             todoProvider.toggleTodoItem(item);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: item.isCompleted
+                    ? const Color.fromARGB(255, 175, 219, 255)
+                    : const Color.fromARGB(255, 182, 181, 181),
+                duration: const Duration(seconds: 2),
+                content: item.isCompleted
+                    ? Text(
+                        "Task Completed",
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          color: Colors.black,
+                        ),
+                      )
+                    : Text(
+                        "Uncompleted Task",
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          color: Colors.black,
+                        ),
+                      ),
+              ),
+            );
           },
         ),
       ),
@@ -110,8 +141,8 @@ class TodoScreen extends StatelessWidget {
           title: Center(
             child: Text(
               'Edit Task',
-              style:
-                  GoogleFonts.arvo(fontSize: 15, fontWeight: FontWeight.w600),
+              style: GoogleFonts.arvo(
+                  fontSize: 15.sp, fontWeight: FontWeight.w600),
             ),
           ),
           content: StatefulBuilder(
@@ -147,7 +178,10 @@ class TodoScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancel'),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: Colors.red, fontSize: 16),
+              ),
             ),
             TextButton(
               onPressed: () {
@@ -155,7 +189,10 @@ class TodoScreen extends StatelessWidget {
                     .updateTodoItem(item, taskController.text, updatedCategory);
                 Navigator.of(context).pop();
               },
-              child: const Text('Save'),
+              child: const Text(
+                'Save',
+                style: TextStyle(color: Colors.blue, fontSize: 16),
+              ),
             ),
           ],
         );
@@ -173,8 +210,11 @@ class TodoScreen extends StatelessWidget {
           title: Center(
             child: Text(
               'Add New Task',
-              style:
-                  GoogleFonts.arvo(fontSize: 15, fontWeight: FontWeight.bold),
+              style: GoogleFonts.arvo(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue,
+              ),
             ),
           ),
           content: StatefulBuilder(
@@ -212,7 +252,10 @@ class TodoScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancel'),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: Colors.red, fontSize: 16),
+              ),
             ),
             TextButton(
               onPressed: () {
@@ -220,7 +263,14 @@ class TodoScreen extends StatelessWidget {
                     .addTodoItem(task, category);
                 Navigator.of(context).pop();
               },
-              child: const Text('Add'),
+              child: const Text(
+                'Add',
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         );
